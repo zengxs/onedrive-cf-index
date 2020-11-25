@@ -58,9 +58,21 @@ async function handleRequest(request) {
   const { pathname, searchParams } = new URL(request.url)
   const neoPathname = pathname.replace(/pagination$/, '')
 
-  const rawImage = searchParams.get('raw')
+  let rawImage = searchParams.get('raw')
   const thumbnail = config.thumbnail ? searchParams.get('thumbnail') : false
-  const proxied = config.proxyDownload ? searchParams.get('proxied') !== null : false
+  let proxied = config.proxyDownload ? searchParams.get('proxied') !== null : false
+
+  // raw=0|1, default is 0
+  if (rawImage == null) {
+    rawImage = false
+    // A little hack, handle "/robots.txt" default in raw mode
+    if (pathname === '/robots.txt') {
+      rawImage = true
+      proxied = true
+    }
+  } else {
+    rawImage = rawImage === '1'
+  }
 
   const oneDriveApiEndpoint = config.useOneDriveCN ? 'microsoftgraph.chinacloudapi.cn' : 'graph.microsoft.com'
 
