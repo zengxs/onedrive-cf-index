@@ -102,7 +102,7 @@ export async function renderFolderView(items, path, request) {
                   } else {
                     fileIcon = `far ${fileIcon}`
                   }
-                  return item(fileIcon, i.name, `${path}${i.name}`, i.size)
+                  return item(fileIcon, i.name, `${path}${i.name}?raw=0`, i.size)
                 } else {
                   console.log(`unknown item type ${i}`)
                 }
